@@ -15,7 +15,27 @@ The problems below are similar to what you can expect for the midterm exam.
 
    covers 169 of the 650 pairs.
 
-
+   <details><summary>Solution</summary>
+     <p>
+     
+     `
+     (a | ... | m) (n | ... | z) | (n | ... | z) (a | ... | m) |
+     (a | ... | f) (g | ... | m) | (g | ... | m) (a | ... | f) |
+     (a | b | c) (d | e | f) | (d | e | f) (a | b | c) |
+     (a | b) c | c (a | b) | ab | ba |
+     (d | e) f | f (d | e) | de | ed |
+     (g | h | i) (j | ... | m) | (j | ... | m) (g | h | i) |
+     (g | h) i | i (g | h) | gh | hg |
+     (j | k) (l | m) | (l | m) (j | k) | jk | kj | lm | ml |
+     (n | ... | s) (t | ... | z) | (t | ... | z) (n | ... | s) |
+     (n | o | p) (q | r | s) | (q | r | s) (n | o | p) |
+     (n | o) p | p (n | o) | no | on |
+     (q | r) s | s (q | r) | qr | rq |
+     (t | u | v) (w | ... | z) | (w | ... | z) (t | u | v) |
+     (t | u) v | v (t | u) | tu | ut |
+     (w | x) (y | z) | (y | z) (w | x) | wx | xw | yz | zy
+     `
+     </p></details>
 
 1. Consider the following context-free grammar for describing an
    expression language built from the binary infix operators `-`, `+`,
@@ -40,6 +60,13 @@ The problems below are similar to what you can expect for the midterm exam.
    ((3 * (4 - ((7 + 2) - 1))) / (2 ** (3 ** 4)))
    ```
 
+   <details><summary>Solution</summary>
+     <p>
+     
+     ```scala
+     3 * (4 - (7 + 2 - 1)) / 2 ** 3 ** 4
+     ```
+     </p></details>
 
 ## Static vs. Dynamic Scoping
 
@@ -70,19 +97,43 @@ Consider the following program:
 
 1. Under static scoping, what value does `g()` on line 14 return?
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     6
+     ```
+     </p></details>
 
 1. Under dynamic scoping, what value does `g()` on line 14 return?
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     6
+     ```
+     </p></details>
 
 1. Under static scoping, what value does `h()` on line 15 return? 
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     6
+     ```
+     </p></details>
 
 1. Under dynamic scoping, what value does `h()` on line 15 return? 
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     9
+     ```
+     </p></details>
 
 ## Parameter Passing Modes
 
@@ -105,20 +156,49 @@ the parameter passing modes for the parameters `x` and `y` of
 
 1. both `x` and `y` are call-by-value parameters
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     3 2
+     ```
+     </p>
+   </details>
 
 
 2. `x` is call-by-reference and `y` is call-by-value
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     3 2
+     ```
+     </p>
+   </details>
+
 
 3. `x` is call-by-value and `y` is call-by-name
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     4 3
+     ```
+     </p>
+   </details>
 
 4. `x` is call-by-reference and `y` is call-by-name
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     4 3
+     ```
+     </p>
+   </details>
 
 ## Deep vs. Shallow Binding
 
@@ -144,11 +224,25 @@ What does this program print:
 
 1. assuming static scoping and deep binding
 
-   
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     0 1
+     ```
+     </p>
+   </details>
 
 1. assuming dynamic scoping and shallow binding
 
-  
+   <details><summary>Solution</summary>
+     <p>
+     
+     ``` 
+     1 2
+     ```
+     </p>
+   </details>
 
 ## Call Stacks and Memory Management
 
@@ -198,6 +292,26 @@ void merge_sort(int* a, int length) {
 }
 ```
 
+<details><summary>Solution</summary>
+<p>
+     
+The problem is that the function `merge` returns a pointer to an array
+`b` that is allocated on the stack within the activation record of
+`merge`. Hence, when `merge` returns, this pointer will be dangling.
+When `merge_sort` executes the `for` loop after `merge_sort` returns
+and dereferences the returned pointer `b`, then this will have
+undefined behavior. In particular, the code may crash with a
+segmentation fault. However, the error may go undetected because the
+old contents of the array `b` from the call to `merge` may still
+reside in memory and so the `for` loop may actually copy the correct
+values back into the array `a`.
+
+The problem can be solved by moving the `for` loop from `merge_sort`
+to the end of `merge`. In this case, `merge` does not need
+a return value and its return type can be changed to `void`.
+
+</p>
+</details>
 
 ## Memory Management (continued)
 
@@ -276,7 +390,43 @@ void delete_list(list_node* L) {
    memory), now its output is strangely corrupted, and Brad goes back
    to Janet for advice. What will she tell him this time?
 
+<details><summary>Solution</summary>
+<p>
+   
+   1. Evidently Brad assumed that the dynamically allocated memory in
+      his program would be garbage collected as in a Java
+      program. This is not the case. The function call `reverse(L)` in
+      Brad's program does not reverse the list `L` *in place*.
+      Instead, it creates a new list with the reversed data elements
+      from the list `L`. The assignment to `L` on the last line of the
+      code snippet overwrites the only pointer to the old list `L`
+      with the pointer pointing to the head of the reversed list that
+      is returned by `reverse`. The list `L` thus remains in memory
+      without being reachable from any stack pointer or global pointer
+      via pointer look-ups. That is, the list can never be
+      deallocated. The program therefore leaks memory. If this code is
+      executed many times, the memory leak will accumulate, using up
+      all available heap memory, which will cause the program to crash
+      eventually with an "out of memory" error.
+  
+   2. The problem with Brad's new program is that the data elements
+      stored in list `L` are shared with the reversed list `T` created
+      by `reverse`. Inspecting the code of `delete_list` reveals that
+      this function does not just dispose the memory that is allocated
+      for the nodes constituting list `L`, but also the memory of the
+      actual data elements pointed to by the `data` pointers in each
+      node of the list.  Hence, after the call to `delete_list(L)`,
+      all `data` pointers in the nodes of the reversed list `T` are
+      dangling, i.e., they point to unallocated memory regions in the
+      heap.  If Brad's program later dereferences any of these
+      dangling pointers, the program may crash, e.g. with a
+      segmentation fault because it accesses unallocated memory, or it
+      may corrupt the state of the heap because, in the meantime, the
+      memory pointed to by the dangling references has been
+      reallocated for other purposes.
 
+</p>
+</details>
 
 ## OCaml Programming with Lists
 
@@ -299,7 +449,25 @@ void delete_list(list_node* L) {
    - : string option = None
    ```
    
-   
+   <details><summary>Solution</summary>
+   <p>
+     
+   ```ocaml
+   (* Tail-recursive solution (preferable in this case) *)
+   let rec find_nth n = function
+   | [] -> None
+   | x :: xs -> if n = 1 then Some x else find_nth (n - 1) xs
+     
+   (* Solution with List.fold_left (slightly convoluted) *)
+   let find_nth n xs =
+     let helper (n, r) x = function
+       if n = 1 then (0, Some x) else (n - 1, r)
+     in
+     let _, r = List.fold_left helper (n, None) xs in
+     r
+   ```
+   </p>
+   </details>
 
    
    
@@ -318,7 +486,39 @@ void delete_list(list_node* L) {
    # - : 'a list list
    ```
    
-   
+   <details><summary>Solution</summary>
+   <p>
+     
+   ```ocaml
+   (* Tail-recursive solution *)
+   let pack xs =
+     let rec pack_helper xs curr_pack packed_xs = 
+       match xs, curr_pack with
+       | x :: xs1, y :: _ -> 
+         if x = y 
+         then pack_helper xs1 (y :: curr_pack) packed_xs
+         else pack_helper xs1 [x] (curr_pack :: packed_xs)
+       | x :: xs1, [] -> 
+         pack_helper xs1 [x] packed_xs
+       | [], _ -> List.rev (curr_pack :: packed_xs)
+     in
+     pack_helper xs [] []
+       
+   ; Solution with fold_left
+   let pack xs =
+     let helper res x = match res with
+     | (y :: _ as curr_pack) :: packed_xs -> 
+       if x = y 
+       then (x :: curr_pack) :: packed_xs
+       else [x] :: curr_pack :: packed_xs
+     | _ -> [[x]]
+     in
+     xs |>
+     List.fold_left helper [] |>
+     List.rev
+   ```
+   </p>
+   </details>
    
 1. Write an OCaml function 
 
@@ -333,6 +533,16 @@ void delete_list(list_node* L) {
    # encode ["a"; "a"; "a"; "b"; "c"; "c"; "c"; "c"; "d"; "d"] ;;
    -: (string * int) list = [("a", 3); ("b"; 1); ("c", 4); ("d"; 2)]
    ```
+   
+   <details><summary>Solution</summary>
+   <p>
+     
+   ```ocaml
+   let encode xs = 
+     List.map (fun pack -> (List.hd pack, List.length pack)) (pack xs)
+   ```
+   </p>
+   </details>
    
    
 Challenge yourself and try to implement these functions as efficiently
@@ -362,7 +572,19 @@ property should be maintained by all the considered operations.
       
    that returns the maximal element of a tree if it exists.
       
+   <details><summary>Solution</summary>
+   <p>
+      
+   ```ocaml
    
+   let rec max_opt = function
+   | Leaf -> None
+   | Node (x, l, Leaf) -> Some x
+   | Node (x, l, r) -> max_opt r
+   ```
+   </p>
+   </details>
+      
       
 1. Write a function
     
@@ -376,4 +598,20 @@ property should be maintained by all the considered operations.
    values in `t` that are strictly greater than `x`, and `present`
    is `true` iff `x` is contained in `t`.
        
-   
+   <details><summary>Solution</summary>
+   <p>
+      
+   ```ocaml
+   let rec split x = function
+   | Leaf -> (Leaf, false, Leaf)
+   | Node (y, l, r) ->
+     if x < y then 
+       let ls, present, lg = split x l in
+       (ls, present, Node (y, lg, r))
+     else if x > y then
+       let rs, present, rg = split x r in
+       (Node (y, l, rs), present, lg)
+     else (l, true, r)
+   ```
+   </p>
+   </details>
