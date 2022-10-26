@@ -18,7 +18,7 @@ The problems below are similar to what you can expect for the midterm exam.
    <details><summary>Solution</summary>
      <p>
      
-     `
+     ```
      (a | ... | m) (n | ... | z) | (n | ... | z) (a | ... | m) |
      (a | ... | f) (g | ... | m) | (g | ... | m) (a | ... | f) |
      (a | b | c) (d | e | f) | (d | e | f) (a | b | c) |
@@ -34,7 +34,7 @@ The problems below are similar to what you can expect for the midterm exam.
      (t | u | v) (w | ... | z) | (w | ... | z) (t | u | v) |
      (t | u) v | v (t | u) | tu | ut |
      (w | x) (y | z) | (y | z) (w | x) | wx | xw | yz | zy
-     `
+     ```
      </p></details>
 
 1. Consider the following context-free grammar for describing an
