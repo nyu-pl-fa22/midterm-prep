@@ -492,17 +492,16 @@ void delete_list(list_node* L) {
    ```ocaml
    (* Tail-recursive solution *)
    let pack xs =
-     let rec pack_helper xs curr_pack packed_xs = 
-       match xs, curr_pack with
-       | x :: xs1, y :: _ -> 
+     let rec pack_helper xs acc = 
+       match xs, acc with
+       | x :: xs1, (y :: _ as curr_pack) :: packed_xs -> 
          if x = y 
-         then pack_helper xs1 (y :: curr_pack) packed_xs
-         else pack_helper xs1 [x] (curr_pack :: packed_xs)
-       | x :: xs1, [] -> 
-         pack_helper xs1 [x] packed_xs
-       | [], _ -> List.rev (curr_pack :: packed_xs)
+         then pack_helper xs1 ((y :: curr_pack) :: packed_xs)
+         else pack_helper xs1 ([x] :: curr_pack :: packed_xs)
+       | x :: xs1, _ -> pack_helper xs1 [[x]] 
+       | [], _ -> acc
      in
-     pack_helper xs [] []
+     pack_helper xs [] |>  List.rev
        
    ; Solution with fold_left
    let pack xs =
